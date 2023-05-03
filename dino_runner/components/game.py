@@ -22,7 +22,7 @@ class Game:
         self.player = Dinosaur()
         self.cloud = Cloud()
         self.obstacle_manager = ObstacleManager()
-        self.bird = Bird()
+        #self.bird = Bird()
         self.power_up_manager = PowerUpManager()
         self.points = 0
     def run(self):
@@ -44,7 +44,7 @@ class Game:
         user_input = pygame.key.get_pressed()
         self.player.uptade(user_input)
         self.obstacle_manager.update(self.game_speed, self.player)
-        self.bird.update(self.player)
+        ##self.bird.update(self.player)
         self.power_up_manager.update(self.game_speed, self.points, self.player)
         if self.player.dino_dead:
             self.player.image = DEAD
@@ -56,7 +56,7 @@ class Game:
         self.cloud.draw(self.screen)
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
-        self.bird.draw(self.screen)
+        ##self.bird.draw(self.screen)
         self.power_up_manager.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
