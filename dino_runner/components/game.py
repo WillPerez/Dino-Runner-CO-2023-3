@@ -1,7 +1,7 @@
 import pygame
 import random
 
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEAD
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_mannager import ObstacleManager
 from dino_runner.components.clouds import Cloud
@@ -47,8 +47,8 @@ class Game:
         ##self.bird.update(self.player)
         self.power_up_manager.update(self.game_speed, self.points, self.player)
         if self.player.dino_dead:
-            self.player.image = DEAD
-            self.playing = False
+           self.player.dead()
+           self.playing = False
     def draw(self):
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))

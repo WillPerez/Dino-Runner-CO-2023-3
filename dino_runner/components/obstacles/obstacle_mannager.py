@@ -5,7 +5,7 @@ from dino_runner.components.obstacles.bird import Bird
 class ObstacleManager:
     def __init__(self):
         self.obstacles =[]
-        self.random_obstacles = ["cactus", "bird"]
+        self.random_obstacles = ["cactus", "cactus", "cactus", "bird"]
         self.random_obstacle = None
 
     def update(self, game_speed, player):
