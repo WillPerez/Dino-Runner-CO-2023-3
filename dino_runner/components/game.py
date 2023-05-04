@@ -28,6 +28,14 @@ class Game:
         self.power_up_manager = PowerUpManager()
         self.points = 0
         self.death_count = 0
+        self.speed_turbo = self.game_speed * 2
+        self.WHITE = (255, 255, 255)
+        self.BLACK = (0, 0, 0)
+        self.color_sky = self.WHITE
+        self.time_sky = self.points
+        self.list_colors = [self.BLACK, self.WHITE]
+
+
     def run(self):
         # Game loop: events - update - draw
         self.running = True
@@ -50,23 +58,32 @@ class Game:
         if self.playing:
             self.points += 1
             user_input = pygame.key.get_pressed()
-            self.player.uptade(user_input)
+            self.player.uptade(user_input, self.game_speed)
             self.obstacle_manager.update(self.game_speed, self.player)
             self.power_up_manager.update(self.game_speed, self.points, self.player)
             if self.player.dino_dead:
                self.player.dead()
+               pygame.time.delay(500)
                self.playing = False
                self.death_count += 1
+            if self.player.dino_dash:
+                self.game_speed = self.speed_turbo
+            else: self.game_speed = 20
+            if self.points % 200 == 0:
+                self.color_sky = random.choice(self.list_colors)
+            
+            
     def draw(self):
         if self.playing:
             self.clock.tick(FPS)
-            self.screen.fill((255, 255, 255))
+            self.screen.fill(self.color_sky)
             self.draw_background()
             self.cloud.draw(self.screen)
             self.player.draw(self.screen)
             self.obstacle_manager.draw(self.screen)
             ##self.bird.draw(self.screen)
             self.power_up_manager.draw(self.screen)
+            self.draw_score()
         else:
             self.draw_menu()
         pygame.display.update()
@@ -90,8 +107,28 @@ class Game:
         white_color = (255, 255, 255)
         self.screen.fill(white_color)
         if self.death_count == 0:
-            text, text_rect = text_utils.get_message('pess any key to start', 30)
+            text, text_rect = text_utils.get_message('Pess Any Key To Start', 30, height= SCREEN_HEIGHT //3)
             self.screen.blit(text, text_rect)
+            controls, controls_rect = text_utils.get_message('Controls:', 30, height= SCREEN_HEIGHT //2 - 30)
+            self.screen.blit(controls, controls_rect)
+            controls, controls_rect = text_utils.get_message('^ : ' + 'jump', 20, height= SCREEN_HEIGHT //2 + 10)
+            self.screen.blit(controls, controls_rect)
+            controls, controls_rect = text_utils.get_message('down : ' + 'Duck', 20, height= SCREEN_HEIGHT //2 + 40)
+            self.screen.blit(controls, controls_rect)
+            controls, controls_rect = text_utils.get_message('Space : ' + 'Super Jump', 20, height= SCREEN_HEIGHT //2 + 70)
+            self.screen.blit(controls, controls_rect)
+            controls, controls_rect = text_utils.get_message('Shilft : ' + 'Dash', 20, height= SCREEN_HEIGHT //2 + 100)
+            self.screen.blit(controls, controls_rect)
+            power, power_rect = text_utils.get_message('Powers', 30, height= SCREEN_HEIGHT //2 + 130)
+            self.screen.blit(power, power_rect)
+            power, power_rect = text_utils.get_message('Shield : ' + 'invulnerability', 20, height= SCREEN_HEIGHT //2 + 160)
+            self.screen.blit(power, power_rect)
+            power, power_rect = text_utils.get_message('Hammer : ' + 'destroy obstacles', 20, height= SCREEN_HEIGHT //2 + 190)
+            self.screen.blit(power, power_rect)
+            power, power_rect = text_utils.get_message('black heart : ' + 'avoid it, it will kill you', 20, height= SCREEN_HEIGHT //2 + 220)
+            self.screen.blit(power, power_rect)
+            
+            
         else:
             text,text_rect = text_utils.get_message('Press Any Key To Start', 30)
             score, score_rect = text_utils.get_message('your score: ' + str(self.points), 30, height= SCREEN_HEIGHT //2 + 50)
@@ -103,6 +140,7 @@ class Game:
         self.obstacle_manager = ObstacleManager()
         self.power_up_manager = PowerUpManager()
         self.points = 0
+        self.color_sky = self.WHITE
 
             
     

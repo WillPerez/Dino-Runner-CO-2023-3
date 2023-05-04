@@ -13,12 +13,15 @@ class Obstacle:
         self.rect.x -= game_speed
 
         if self.rect.colliderect(player.dino_rect):
-            if not player.shield:
+            
+            
+            if not player.shield and not player.hammer:
+
                 player.dino_dead = True
+                player.dead()
 
             if player.hammer:
                 player.smash = True
-                print("romper")
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
