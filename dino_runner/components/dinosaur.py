@@ -8,6 +8,7 @@ class Dinosaur:
     Y_POS = 310
     Y_POS_DUCK = 340
     JUMP_VEL = 8.5
+    VEL_SUPER_DOWN = 0.4
 
     def __init__(self):
         self.run_img = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD, HAMMER_TYPE: RUNNING_HAMMER}
@@ -25,9 +26,13 @@ class Dinosaur:
         self.dino_super_jump = False
         self.jump_vel = self.JUMP_VEL
         self.dino_dead = False
+        self.smash = False
         self.down = False
         self.vel_down = 0.8
         self.vel_super_down = 0.4
+        self.shield = False
+        self.hammer = False
+        self.time_up_power_up = 0
         
     def uptade(self, user_input):
         if self.dino_jump:
@@ -72,6 +77,17 @@ class Dinosaur:
         if self.step_index >= 10:
             self.step_index = 0
 
+        if self.shield:
+            time_to_show = round((self.time_up_power_up - pygame.time.get_ticks()) / 1000, 2)
+            if time_to_show <0:
+                self.reset()
+
+        if self.hammer:
+            time_to_show = round((self.time_up_power_up - pygame.time.get_ticks()) / 1000, 2)
+            if time_to_show <0:
+                self.reset()
+        if self.smash:
+            print("llego hasta dinosaur")
     def draw(self,screen):
         screen.blit(self.image, self.dino_rect)
 
@@ -103,15 +119,17 @@ class Dinosaur:
     def super_jump(self):
         self.image = self.jump_img[self.type]
         if self.dino_super_jump:
-           ## if self.down:
-           ##     print("baje rapido")
-           ##     self.vel_super_down = 1.2
+            if self.down:
+                print("baje rapido")
+                self.vel_super_down = 1.2
             self.dino_rect.y -= self.jump_vel * 4
             self.jump_vel -= self.vel_super_down
+            
         if self.jump_vel < -self.JUMP_VEL:
             self.dino_rect.y = self.Y_POS
             self.dino_super_jump = False
             self.jump_vel = self.JUMP_VEL
+            self.vel_super_down = self.VEL_SUPER_DOWN
 
     def dead(self):
         if self.dino_duck:
@@ -122,5 +140,15 @@ class Dinosaur:
     def set_power_up(self, power_up):
         if power_up.type == SHIELD_TYPE:
             self.type = SHIELD_TYPE
+            self.shield = True
+            self.time_up_power_up = power_up.time_up
         if power_up.type == HAMMER_TYPE:
             self.type = HAMMER_TYPE
+            self.hammer = True
+            self.time_up_power_up = power_up.time_up
+
+    def reset(self):
+        self.type = DEFAULT_TYPE
+        self.shield = False
+        self.hammer = False
+        self.time_up_power_up = 0

@@ -7,14 +7,22 @@ class ObstacleManager:
         self.obstacles =[]
         self.random_obstacles = ["cactus", "cactus", "cactus", "bird"]
         self.random_obstacle = None
+        
 
     def update(self, game_speed, player):
         self.random_obstacle = random.choice(self.random_obstacles)
-        if len(self.obstacles) == 0 and self.random_obstacle == "cactus":
+        if (len(self.obstacles) == 0 and self.random_obstacle == "cactus") or player.smash:
             self.obstacles.append(Cactus())
+            
+            
+            
 
-        if len(self.obstacles) == 0 and self.random_obstacle == "bird":
+
+        if (len(self.obstacles) == 0 and self.random_obstacle == "bird") or player.smash:
             self.obstacles.append(Bird())
+                
+        ##if player.smash == True:
+         ##   print("si hace caso")
 
         for obstacle in self.obstacles:
             if obstacle.rect.x < -obstacle.rect.width:
