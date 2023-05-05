@@ -142,7 +142,7 @@ class Dinosaur:
         self.image = self.jump_img[self.type]
         if self.dino_super_jump:
             if self.down:
-                self.vel_super_down = 0.6
+                self.vel_super_down = 0.8
             self.dino_rect.y -= self.jump_vel * 4
             self.jump_vel -= self.vel_super_down
             

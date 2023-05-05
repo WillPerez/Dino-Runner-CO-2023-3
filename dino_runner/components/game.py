@@ -34,6 +34,7 @@ class Game:
         self.color_sky = self.WHITE
         self.time_sky = self.points
         self.list_colors = [self.BLACK, self.WHITE]
+        self.number_nights = 0
 
 
     def run(self):
@@ -57,6 +58,7 @@ class Game:
     def update(self):
         if self.playing:
             self.points += 1
+            self.points_dash = self.points + 2
             user_input = pygame.key.get_pressed()
             self.player.uptade(user_input, self.game_speed)
             self.obstacle_manager.update(self.game_speed, self.player)
@@ -68,9 +70,13 @@ class Game:
                self.death_count += 1
             if self.player.dino_dash:
                 self.game_speed = self.speed_turbo
+                self.points = self.points_dash
             else: self.game_speed = 20
-            if self.points % 200 == 0:
-                self.color_sky = random.choice(self.list_colors)
+            if self.points % 1100 == 0:
+                self.color_sky = self.BLACK
+                self.number_nights += 1
+            if self.points % 500 == 0:
+                self.color_sky = self.WHITE
             
             
     def draw(self):
@@ -132,8 +138,14 @@ class Game:
         else:
             text,text_rect = text_utils.get_message('Press Any Key To Start', 30)
             score, score_rect = text_utils.get_message('your score: ' + str(self.points), 30, height= SCREEN_HEIGHT //2 + 50)
+            luck, luck_rect = text_utils.get_message('Casi Lo Logras ' , 20, height= SCREEN_HEIGHT //2 + 100)
+            good_luck, good_luck_rect = text_utils.get_message('Mejor Suerte Para La Proxima' , 30, height= SCREEN_HEIGHT //2 + 130)
+            nigths, nights_rect = text_utils.get_message('Dias sobrevividos: ' + str(self.number_nights) , 30, height= SCREEN_HEIGHT //2 + 160)
             self.screen.blit(text,text_rect)
             self.screen.blit(score, score_rect)
+            self.screen.blit(luck, luck_rect)
+            self.screen.blit(good_luck, good_luck_rect)
+            self.screen.blit(nigths, nights_rect)
     def reset_game(self):
         self.game_speed = 20
         self.player = Dinosaur()

@@ -7,7 +7,7 @@ from dino_runner.components.power_ups.live import Live
 class PowerUpManager:
     def __init__(self):
         self.power_ups = []
-        self.shield_or_hammer = ["shield", "hammer","shield", "hammer","shield", "hammer","live"]
+        self.shield_or_hammer = ["live"]
         self.random_power = None
 
     def update(self, game_speed, points, player):
